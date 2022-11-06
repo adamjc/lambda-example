@@ -4,7 +4,30 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       Runtime: nodejs16.x
-      Role: $role
-      Handler: main.handler
-      Code:
-        ZipFile: dist.zip
+      Role: !GetAtt lambdaRole.Arn
+      Handler: src/main.handler
+      Code: dist/
+
+  lambdaRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: lambdaCreatesLogs
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogGroup
+                - logs:PutLogEvents
+              Resource: arn:aws:logs:*:*:*

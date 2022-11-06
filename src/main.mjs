@@ -1,10 +1,13 @@
 import { pipe, tap } from "ramda"
+import getTransformer from "./transform.mjs"
 
-export async function handler (name) {
+const transformer = getTransformer()
+
+export async function handler () {
   return Promise.resolve(
     pipe(
       tap(_ => console.log("I am doing something...")),
-      name => `Hello, ${name}!`
-    )(name)
+      transformer => `Hello, ${transformer()}!`
+    )(transformer)
   )
 }

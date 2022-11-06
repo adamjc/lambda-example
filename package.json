@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha **/*.test.mjs"
+    "test": "npm run test:foo",
+    "test:foo": "export platform=foo; mocha **/*.test.mjs",
+    "test:bar": "export platform=bar; mocha **/*.test.mjs"
   },
   "keywords": [],
   "author": "",

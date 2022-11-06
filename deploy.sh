@@ -7,8 +7,7 @@ set -x # echo every command
 
 echo "DEPLOY"
 echo "Cleaning up..."
-rm dist.zip
-rm -rf dist
+rm -rf dist dist.zip
 npm prune --omit=dev
 
 echo "Setup..."
@@ -17,15 +16,14 @@ mkdir dist
 echo "Packaging..."
 cp -r node_modules dist/node_modules
 cp -r src dist/src
-zip -r dist.zip dist --quiet
 
 echo "Deploying..."
 aws cloudformation package \
   --template-file infrastructure.yaml \
-  --s3-bucket arn:aws:s3:::adamjc-build-artifacts \
+  --s3-bucket adamjc-build-artifacts \
   --output-template-file infrastructure-production.yaml
 
 aws cloudformation deploy \
   --template-file infrastructure-production.yaml \
-  --stack-name $SERVICE_NAME \
+  --stack-name lambda-example \
   --capabilities CAPABILITY_IAM # See: https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_CreateStack.html
