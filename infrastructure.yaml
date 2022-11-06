@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  handler:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: nodejs16.x
+      Role: $role
+      Handler: main.handler
+      Code:
+        ZipFile: dist.zip
